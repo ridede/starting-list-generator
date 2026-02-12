@@ -1,4 +1,4 @@
-# RideDe Organizer Tools
+# Ridede Organizer Tools
 
 > [Polish version](README.pl.md)
 
