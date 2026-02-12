@@ -1,8 +1,17 @@
+const pluralizePl = (n, one, few, many) => {
+  const abs = Math.abs(n);
+  const mod10 = abs % 10;
+  const mod100 = abs % 100;
+  if (abs === 1) return one;
+  if (mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)) return few;
+  return many;
+};
+
 const LANG = window.LANG || {
-  participantsCount: (n) => `Suma uczestników: ${n}`,
-  modeHintGroups: "Podaj liczbę grup:",
-  modeHintSize: "Podaj liczbę osób w grupie:",
-  shuffleRangeError: "Liczba mieszań musi być w zakresie 1–10.",
+  participantsCount: (n) => `Liczba uczestników: ${n}`,
+  modeHintGroups: "Liczba grup:",
+  modeHintSize: "Liczba osób w grupie:",
+  shuffleRangeError: "Liczba przetasowań musi mieścić się w zakresie 1–10.",
   valueError: "Wartość musi być liczbą większą od 0.",
   emptyError: "Dodaj co najmniej jednego uczestnika.",
   tooManyGroupsError: "Liczba grup nie może przekraczać liczby uczestników.",
@@ -10,24 +19,24 @@ const LANG = window.LANG || {
   groupLabelTime: (label, time) => `Grupa ${label} — ${time}`,
   csvHeaders: ["Grupa", "Pozycja startowa", "Uczestnik"],
   exportImageError: "Nie udało się wygenerować obrazu.",
-  exportPdfError: "Nie udało się wygenerować PDF.",
-  shuffleFirst: "Najpierw wykonaj losowanie.",
+  exportPdfError: "Nie udało się wygenerować pliku PDF.",
+  shuffleFirst: "Najpierw wylosuj grupy.",
   csvNoHeaders: "Brak nagłówków w pliku CSV.",
   csvNoData: "Plik CSV nie zawiera danych.",
   csvReadError: "Nie udało się odczytać pliku CSV.",
   csvEmptyHeader: "(puste)",
-  csvPreviewInfo: "Podgląd CSV (nagłówki + 3 wiersze).",
-  csvSelectColumn: "Wybierz kolumnę z danymi uczestników (np. imię i nazwisko):",
-  csvRemainingRows: (n) => `Pozostało jeszcze ${n} wierszy.`,
+  csvPreviewInfo: "Podgląd CSV (nagłówki + 3 pierwsze wiersze).",
+  csvSelectColumn: "Wybierz kolumnę z nazwami uczestników (np. imię i nazwisko):",
+  csvRemainingRows: (n) => `${n} ${pluralizePl(n, "wiersz", "wiersze", "wierszy")} więcej.`,
   csvAllRows: "To wszystkie wiersze w pliku.",
   csvColumnFallback: (n) => `Kolumna ${n}`,
   defaultFilename: "lista-startowa",
-  summaryGroups: (n) => `${n} grup`,
+  summaryGroups: (n) => `${n} ${pluralizePl(n, "grupa", "grupy", "grup")}`,
   summaryPerGroup: (n) => `${n} w grupie`,
-  summaryParticipants: (n) => `${n} uczestników`,
+  summaryParticipants: (n) => (n === 1 ? "1 uczestnik" : `${n} uczestników`),
   summaryLabelsNumbers: "numery",
   summaryLabelsLetters: "litery",
-  summaryShuffle: (n) => (n === 1 ? "1× mieszanie" : `${n}× mieszanie`),
+  summaryShuffle: (n) => (n === 1 ? "1× tasowanie" : `${n}× tasowanie`),
   shuffleAgain: "Losuj ponownie",
   showAllOptions: "Pokaż wszystkie opcje",
 };
