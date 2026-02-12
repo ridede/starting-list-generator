@@ -1,8 +1,8 @@
-# Ridede Organizer Tools
+# Starting List Generator
 
 > [Polish version](README.pl.md)
 
-A browser-based tool for randomizing starting groups for cycling races. Load a participant list (manually or from CSV), shuffle them into groups, and export the result as CSV, PDF, or PNG.
+A browser-based tool for generating randomized starting groups for cycling races. Load a participant list (manually or from CSV), shuffle them into groups, and export the result as CSV, PDF, or PNG.
 
 Everything runs in the browser — no data is sent to any server.
 
@@ -21,7 +21,7 @@ Everything runs in the browser — no data is sent to any server.
 
 1. Open `index.html` (English) or `index.pl.html` (Polish) in a browser.
 2. Enter participants manually (one per line) or load from a CSV file.
-3. Choose a grouping mode and click **Shuffle** / **Losuj**.
+3. Choose a grouping mode and click **Generate groups** / **Losuj grupy**.
 4. Export the result as CSV, PDF, or PNG.
 
 ## Privacy

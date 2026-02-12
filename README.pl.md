@@ -1,8 +1,8 @@
-# RideDe Organizer Tools
+# Generator listy startowej
 
 > [Wersja angielska](README.md)
 
-Narzędzie do losowania grup startowych na wyścigi rowerowe. Wczytaj listę uczestników (ręcznie lub z CSV), wylosuj podział na grupy i wyeksportuj wynik jako CSV, PDF lub PNG.
+Narzędzie do generowania (losowania) listy startowej na wyścigi rowerowe. Wczytaj listę uczestników (ręcznie lub z CSV), wylosuj podział na grupy i wyeksportuj wynik jako CSV, PDF lub PNG.
 
 Całość działa w przeglądarce — żadne dane nie są wysyłane na zewnętrzne serwery.
 
@@ -21,7 +21,7 @@ Całość działa w przeglądarce — żadne dane nie są wysyłane na zewnętrz
 
 1. Otwórz `index.html` (angielski) lub `index.pl.html` (polski) w przeglądarce.
 2. Wpisz uczestników ręcznie (jeden na linię) lub wczytaj z pliku CSV.
-3. Wybierz tryb podziału i kliknij **Losuj**.
+3. Wybierz tryb podziału i kliknij **Losuj grupy**.
 4. Wyeksportuj wynik jako CSV, PDF lub PNG.
 
 ## Prywatność
