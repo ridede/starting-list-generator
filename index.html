@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Open source starting list generator for cycling races. 100% browser-side, no data stored or sent." />
+    <meta name="description" content="Open-source starting list generator for cycling races. 100% in-browser — no data stored or sent." />
     <title>Ridede organizer tools - starting list draw</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -17,23 +17,23 @@
         <a href="index.pl.html" class="lang-switch" title="Polski">Polski</a>
         <h1 class="h3">Starting list draw</h1>
         <p class="subtitle text-muted mb-0">
-          The starting list generator is open source, runs 100% in your browser — we don't store or send any data.
+          This tool is open source and runs 100% in your browser — no data is stored or sent.
         </p>
       </header>
 
       <section class="panel card p-3 mb-4">
         <div id="panelCollapsed" class="panel-collapsed hidden">
-          <div class="panel-collapsed-row d-flex align-items-center gap-2">
-            <div class="panel-summary text-muted small" id="panelSummary"></div>
-            <div class="panel-collapsed-actions d-flex flex-wrap gap-2 align-items-center">
-            <button id="shuffleAgainBtn" class="btn btn-primary">Shuffle again</button>
-            <button id="expandPanelBtn" class="btn btn-link btn-expand p-0" type="button" aria-expanded="false">
-              <span>Show all options</span>
-              <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
-            </button>
-          </div>
-          </div>
-        </div>
+	          <div class="panel-collapsed-row d-flex align-items-center gap-2">
+	            <div class="panel-summary text-muted small" id="panelSummary"></div>
+	            <div class="panel-collapsed-actions d-flex flex-wrap gap-2 align-items-center">
+	              <button id="shuffleAgainBtn" class="btn btn-primary">Draw again</button>
+	              <button id="expandPanelBtn" class="btn btn-link btn-expand p-0" type="button" aria-expanded="false">
+	                <span>Show all options</span>
+	                <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+	              </button>
+	            </div>
+	          </div>
+	        </div>
         <div id="panelExpanded" class="panel-expanded">
         <div class="import">
           <button
@@ -56,7 +56,7 @@
           placeholder="Jan Kowalski&#10;Agnieszka Nowak&#10;Marek Wiśniewski"
         ></textarea>
         <p class="count text-muted small mb-4 mt-1" id="participantsCount">
-          Total participants: 0
+          Participants: 0
         </p>
 
         <div class="controls row g-4">
@@ -125,7 +125,7 @@
               </div>
 
               <div>
-                <label class="label form-label" for="shuffleCount">Number of shuffles</label>
+                <label class="label form-label" for="shuffleCount">How many shuffles</label>
                 <select id="shuffleCount" class="input form-select">
                   <option value="1" selected>1 time</option>
                   <option value="2">2 times</option>
@@ -138,7 +138,7 @@
                   <option value="9">9 times</option>
                   <option value="10">10 times</option>
                 </select>
-                <span class="hint form-text">More shuffles = more mixing before splitting into groups.</span>
+                <span class="hint form-text">More shuffles = better randomization before splitting into groups.</span>
               </div>
             </div>
           </div>
@@ -178,7 +178,7 @@
                     min="1"
                     value="5"
                   />
-                  <span class="hint form-text">minutes between groups</span>
+                  <span class="hint form-text">minutes between group starts</span>
                 </div>
               </div>
             </div>
@@ -186,17 +186,17 @@
         </div>
 
         <div class="actions mt-3 d-flex flex-wrap gap-2 justify-content-end">
-          <button id="shuffleBtn" class="button primary btn btn-primary">Shuffle groups</button>
-        </div>
-        <div id="shuffleStatus" class="shuffle-status text-muted small hidden">
-          Shuffling list
-        </div>        
+          <button id="shuffleBtn" class="button primary btn btn-primary">Draw groups</button>
+	        </div>
+	        <div id="shuffleStatus" class="shuffle-status text-muted small hidden">
+	          Drawing groups…
+	        </div>        
         <div id="error" class="error text-danger small" role="alert" aria-live="polite"></div>
         </div>
       </section>
 
       <section class="results" id="resultsSection">
-        <h2 class="h5 export-hide">Shuffled groups</h2>
+        <h2 class="h5 export-hide">Drawn groups</h2>
         <p class="event-meta text-muted" id="eventMeta"></p>
         <div id="resultsContainer" class="results-grid"></div>
         <div id="exportActions" class="export-actions hidden mt-3 d-flex flex-wrap gap-2">
@@ -257,8 +257,9 @@
     </div>
 
     <script>
-      window.LANG = {
-        participantsCount: (n) => `Total participants: ${n}`,
+      const pluralizeEn = (n, one, other) => (n === 1 ? one : other);
+	      window.LANG = {
+	        participantsCount: (n) => `Participants: ${n}`,
         modeHintGroups: "Number of groups:",
         modeHintSize: "People per group:",
         shuffleRangeError: "Shuffle count must be between 1 and 10.",
@@ -270,24 +271,25 @@
         csvHeaders: ["Group", "Starting position", "Participant"],
         exportImageError: "Failed to generate image.",
         exportPdfError: "Failed to generate PDF.",
-        shuffleFirst: "Shuffle the list first.",
+        shuffleFirst: "Draw groups first.",
         csvNoHeaders: "No headers found in the CSV file.",
         csvNoData: "The CSV file contains no data.",
-        csvReadError: "Failed to read the CSV file.",
-        csvEmptyHeader: "(empty)",
-        csvPreviewInfo: "CSV preview (headers + 3 rows).",
-        csvSelectColumn: "Select the column with participant data (e.g. full name):",
-        csvRemainingRows: (n) => `${n} more rows not shown.`,
+	        csvReadError: "Failed to read the CSV file.",
+	        csvEmptyHeader: "(empty)",
+	        csvPreviewInfo: "CSV preview (headers + first 3 rows).",
+	        csvSelectColumn: "Select the column with participant names (e.g. full name):",
+	        csvRemainingRows: (n) =>
+	          `${n} more ${pluralizeEn(n, "row", "rows")} not shown.`,
         csvAllRows: "All rows are shown.",
         csvColumnFallback: (n) => `Column ${n}`,
         defaultFilename: "starting-list",
-        summaryGroups: (n) => `${n} groups`,
+        summaryGroups: (n) => `${n} ${pluralizeEn(n, "group", "groups")}`,
         summaryPerGroup: (n) => `${n} per group`,
-        summaryParticipants: (n) => `${n} participants`,
+        summaryParticipants: (n) => `${n} ${pluralizeEn(n, "participant", "participants")}`,
         summaryLabelsNumbers: "numbers",
         summaryLabelsLetters: "letters",
         summaryShuffle: (n) => (n === 1 ? "1 shuffle" : `${n} shuffles`),
-        shuffleAgain: "Shuffle again",
+        shuffleAgain: "Draw again",
         showAllOptions: "Show all options",
       };
     </script>
