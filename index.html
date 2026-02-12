@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Tool for randomizing starting groups for cycling races. 100% browser-side, no data sent anywhere." />
+    <meta name="description" content="Open source starting list generator for cycling races. 100% browser-side, no data stored or sent." />
     <title>Ridede organizer tools - starting list draw</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -17,11 +17,24 @@
         <a href="index.pl.html" class="lang-switch" title="Polski">Polski</a>
         <h1 class="h3">Starting list draw</h1>
         <p class="subtitle text-muted mb-0">
-          100% browser-side — no data is sent anywhere.
+          The starting list generator is open source, runs 100% in your browser — we don't store or send any data.
         </p>
       </header>
 
       <section class="panel card p-3 mb-4">
+        <div id="panelCollapsed" class="panel-collapsed hidden">
+          <div class="panel-collapsed-row d-flex align-items-center gap-2">
+            <div class="panel-summary text-muted small" id="panelSummary"></div>
+            <div class="panel-collapsed-actions d-flex flex-wrap gap-2 align-items-center">
+            <button id="shuffleAgainBtn" class="btn btn-primary">Shuffle again</button>
+            <button id="expandPanelBtn" class="btn btn-link btn-expand p-0" type="button" aria-expanded="false">
+              <span>Show all options</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+          </div>
+          </div>
+        </div>
+        <div id="panelExpanded" class="panel-expanded">
         <div class="import">
           <button
             id="openCsvModal"
@@ -33,7 +46,7 @@
           </button>
         </div>
 
-        <label class="label form-label" for="participants"
+        <label class="label form-label mt-2" for="participants"
           >Participant list (1 person = 1 line)</label
         >
         <textarea
@@ -42,7 +55,7 @@
           rows="10"
           placeholder="Jan Kowalski&#10;Agnieszka Nowak&#10;Marek Wiśniewski"
         ></textarea>
-        <p class="count text-muted small mb-0" id="participantsCount">
+        <p class="count text-muted small mb-4 mt-1" id="participantsCount">
           Total participants: 0
         </p>
 
@@ -172,17 +185,14 @@
           </div>
         </div>
 
-        <div class="actions mt-3 d-flex flex-wrap gap-2">
-          <button id="shuffleBtn" class="button primary btn btn-primary">Shuffle</button>
+        <div class="actions mt-3 d-flex flex-wrap gap-2 justify-content-end">
+          <button id="shuffleBtn" class="button primary btn btn-primary">Shuffle groups</button>
         </div>
         <div id="shuffleStatus" class="shuffle-status text-muted small hidden">
           Shuffling list
-        </div>
-
-        <p class="privacy text-muted small mb-0">
-          Privacy: all data is processed locally in your browser.
-        </p>
+        </div>        
         <div id="error" class="error text-danger small" role="alert" aria-live="polite"></div>
+        </div>
       </section>
 
       <section class="results" id="resultsSection">
@@ -197,8 +207,12 @@
         <div class="powered-footer export-only text-muted small mt-3">Powered by <a href="https://ridede.com" target="_blank" title="Ridede"><img src="ridede-logo.svg" alt="Ridede" class="ridede-logo"></a></div>
       </section>
 
-      <div class="ridede text-end text-muted small">
-        Powered by <a href="https://ridede.com" target="_blank" title="Ridede"><img src="ridede-logo.svg" alt="Ridede" class="ridede-logo"></a>
+      <div class="ridede text-muted small d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <a href="https://github.com/ridede/ridede-organizer-tools" target="_blank" rel="noopener" class="github-source no-print-export" title="View on GitHub" aria-label="View source on GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 2.97-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          <span>Open source</span>
+        </a>
+        <span class="text-end">Powered by <a href="https://ridede.com" target="_blank" rel="noopener" title="Ridede"><img src="ridede-logo.svg" alt="Ridede" class="ridede-logo"></a></span>
       </div>
     </main>
 
@@ -267,6 +281,14 @@
         csvAllRows: "All rows are shown.",
         csvColumnFallback: (n) => `Column ${n}`,
         defaultFilename: "starting-list",
+        summaryGroups: (n) => `${n} groups`,
+        summaryPerGroup: (n) => `${n} per group`,
+        summaryParticipants: (n) => `${n} participants`,
+        summaryLabelsNumbers: "numbers",
+        summaryLabelsLetters: "letters",
+        summaryShuffle: (n) => (n === 1 ? "1 shuffle" : `${n} shuffles`),
+        shuffleAgain: "Shuffle again",
+        showAllOptions: "Show all options",
       };
     </script>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>

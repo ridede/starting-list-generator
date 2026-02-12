@@ -22,6 +22,14 @@ const LANG = window.LANG || {
   csvAllRows: "To wszystkie wiersze w pliku.",
   csvColumnFallback: (n) => `Kolumna ${n}`,
   defaultFilename: "lista-startowa",
+  summaryGroups: (n) => `${n} grup`,
+  summaryPerGroup: (n) => `${n} w grupie`,
+  summaryParticipants: (n) => `${n} uczestników`,
+  summaryLabelsNumbers: "numery",
+  summaryLabelsLetters: "litery",
+  summaryShuffle: (n) => (n === 1 ? "1× mieszanie" : `${n}× mieszanie`),
+  shuffleAgain: "Losuj ponownie",
+  showAllOptions: "Pokaż wszystkie opcje",
 };
 
 const participantsEl = document.getElementById("participants");
@@ -49,6 +57,11 @@ const intervalMinutesEl = document.getElementById("intervalMinutes");
 const eventNameEl = document.getElementById("eventName");
 const eventDateEl = document.getElementById("eventDate");
 const eventMetaEl = document.getElementById("eventMeta");
+const panelCollapsedEl = document.getElementById("panelCollapsed");
+const panelExpandedEl = document.getElementById("panelExpanded");
+const panelSummaryEl = document.getElementById("panelSummary");
+const shuffleAgainBtn = document.getElementById("shuffleAgainBtn");
+const expandPanelBtn = document.getElementById("expandPanelBtn");
 
 let csvHeaders = [];
 let csvRows = [];
@@ -101,7 +114,41 @@ function shuffleTimes(list, times) {
 
 function setShuffling(isShuffling) {
   shuffleBtn.disabled = isShuffling;
+  if (shuffleAgainBtn) {
+    shuffleAgainBtn.disabled = isShuffling;
+  }
   shuffleStatusEl.classList.toggle("hidden", !isShuffling);
+}
+
+function buildSummaryText() {
+  const count = parseParticipants(participantsEl.value).length;
+  const mode = getMode();
+  const value = Number.parseInt(modeValueEl.value, 10);
+  const modeText = mode === "groups" ? LANG.summaryGroups(value) : LANG.summaryPerGroup(value);
+  const labelsText =
+    groupLabelModeEl.value === "letters" ? LANG.summaryLabelsLetters : LANG.summaryLabelsNumbers;
+  const shuffleCount = Number.parseInt(shuffleCountEl.value, 10);
+  const shuffleText = LANG.summaryShuffle(shuffleCount);
+  return `${LANG.summaryParticipants(count)}, ${modeText}, ${labelsText}, ${shuffleText}`;
+}
+
+function collapsePanel() {
+  if (!panelCollapsedEl || !panelExpandedEl || !panelSummaryEl) return;
+  panelSummaryEl.textContent = buildSummaryText();
+  panelExpandedEl.classList.add("hidden");
+  panelCollapsedEl.classList.remove("hidden");
+  if (expandPanelBtn) {
+    expandPanelBtn.setAttribute("aria-expanded", "false");
+  }
+}
+
+function expandPanel() {
+  if (!panelCollapsedEl || !panelExpandedEl) return;
+  panelCollapsedEl.classList.add("hidden");
+  panelExpandedEl.classList.remove("hidden");
+  if (expandPanelBtn) {
+    expandPanelBtn.setAttribute("aria-expanded", "true");
+  }
 }
 
 function splitIntoGroups(list, mode, value) {
@@ -147,6 +194,7 @@ function renderGroups(groups) {
   }
 
   resultsSection.classList.remove("hidden");
+  collapsePanel();
   const cols = Math.min(4, Math.max(1, groups.length));
   resultsContainer.style.setProperty("--cols", String(cols));
 
@@ -553,7 +601,7 @@ applyCsvBtn.addEventListener("click", () => {
   }
 });
 
-shuffleBtn.addEventListener("click", () => {
+function runShuffle() {
   setError("");
   setShuffling(true);
   window.setTimeout(() => {
@@ -572,11 +620,22 @@ shuffleBtn.addEventListener("click", () => {
       currentGroupTimes = [];
       renderGroups(currentGroups);
       setError(error.message);
+      expandPanel();
     } finally {
       setShuffling(false);
     }
   }, 150);
-});
+}
+
+shuffleBtn.addEventListener("click", runShuffle);
+
+if (shuffleAgainBtn) {
+  shuffleAgainBtn.addEventListener("click", runShuffle);
+}
+
+if (expandPanelBtn) {
+  expandPanelBtn.addEventListener("click", expandPanel);
+}
 
 csvBtn.addEventListener("click", () => {
   setError("");

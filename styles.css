@@ -50,6 +50,59 @@ body {
 .panel {
   display: grid;
   gap: 16px;
+  min-width: 0;
+}
+
+.panel-collapsed {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.panel-collapsed-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.panel-summary {
+  font-size: 14px;
+  line-height: 1.4;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.panel-collapsed-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+
+.btn-expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.btn-expand:hover {
+  color: var(--accent);
+}
+
+.btn-expand .chevron {
+  transition: transform 0.2s ease;
+}
+
+.btn-expand[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
 }
 
 .label {
@@ -166,6 +219,10 @@ body {
   display: none !important;
 }
 
+.exporting .export-hide {
+  display: none !important;
+}
+
 .shuffle-status {
   margin-top: 8px;
   font-size: 12px;
@@ -186,8 +243,28 @@ body {
 }
 
 @media (max-width: 600px) {
+  .panel-collapsed-row {
+    flex-wrap: wrap !important;
+  }
+
+  .panel-summary {
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .panel-collapsed-actions {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
   .results-grid {
     --cols: 1;
+  }
+
+  .result-col {
+    flex: 0 0 100%;
   }
 
   .schedule {
@@ -207,7 +284,8 @@ body {
   .actions,
   .export-actions,
   .lang-switch,
-  .ridede {
+  .ridede,
+  .no-print-export {
     display: none !important;
   }
 
@@ -215,7 +293,11 @@ body {
     padding: 0;
   }
 
-  .results h2 {
+  .results h2.export-hide {
+    display: none !important;
+  }
+
+  .results h2:not(.export-hide) {
     margin-top: 0;
   }
 
@@ -232,6 +314,18 @@ body {
   text-decoration: none;
   color: inherit;
   font-weight: 600;
+}
+
+.github-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.github-source:hover {
+  color: var(--ink);
 }
 
 .ridede-logo {
