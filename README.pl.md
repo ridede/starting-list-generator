@@ -2,6 +2,8 @@
 
 > [Wersja angielska](README.md)
 
+Wersja online (GitHub Pages): https://ridede.github.io/starting-list-generator/ (ten sam kod co w repo, działa w przeglądarce)
+
 Narzędzie do generowania (losowania) listy startowej na wyścigi rowerowe. Wczytaj listę uczestników (ręcznie lub z CSV), wylosuj podział na grupy i wyeksportuj wynik jako CSV, PDF lub PNG.
 
 Całość działa w przeglądarce — żadne dane nie są wysyłane na zewnętrzne serwery.
