@@ -2,7 +2,7 @@
 
 > [Polish version](README.pl.md)
 
-Web version (GitHub Pages): https://ridede.github.io/starting-list-generator/ (same code as this repo, runs in-browser)
+Web version (GitHub Pages): https://ridede.github.io/starting-list-generator/
 
 A browser-based tool for generating randomized starting groups for cycling races. Load a participant list (manually or from CSV), shuffle them into groups, and export the result as CSV, PDF, or PNG.
 
