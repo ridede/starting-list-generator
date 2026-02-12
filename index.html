@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Tool for randomizing starting groups for cycling races. 100% browser-side, no data sent anywhere." />
+    <title>Ridede organizer tools - starting list draw</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app container py-4">
+      <header class="header mb-4">
+        <a href="index.pl.html" class="lang-switch" title="Polski">Polski</a>
+        <h1 class="h3">Starting list draw</h1>
+        <p class="subtitle text-muted mb-0">
+          100% browser-side — no data is sent anywhere.
+        </p>
+      </header>
+
+      <section class="panel card p-3 mb-4">
+        <div class="import">
+          <button
+            id="openCsvModal"
+            class="button btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#csvModal"
+          >
+            Load from CSV
+          </button>
+        </div>
+
+        <label class="label form-label" for="participants"
+          >Participant list (1 person = 1 line)</label
+        >
+        <textarea
+          id="participants"
+          class="textarea form-control"
+          rows="10"
+          placeholder="Jan Kowalski&#10;Agnieszka Nowak&#10;Marek Wiśniewski"
+        ></textarea>
+        <p class="count text-muted small mb-0" id="participantsCount">
+          Total participants: 0
+        </p>
+
+        <div class="controls row g-4">
+          <div class="col-12 col-lg-6">
+            <div class="d-grid gap-3">
+              <div class="mode">
+                <span class="label form-label d-block">Grouping mode</span>
+                <label class="radio form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="mode"
+                    value="groups"
+                    checked
+                  />
+                  <span class="form-check-label">Number of groups</span>
+                </label>
+                <label class="radio form-check">
+                  <input class="form-check-input" type="radio" name="mode" value="size" />
+                  <span class="form-check-label">People per group</span>
+                </label>
+              </div>
+
+              <div>
+                <label class="label form-label" for="modeValue" id="modeHint">Number of groups:</label>
+                <select id="modeValue" class="input form-select">
+                  <option value="1">1</option>
+                  <option value="2" selected>2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="label form-label" for="groupLabelMode">Group labels</label>
+                <select id="groupLabelMode" class="input form-select">
+                  <option value="numbers" selected>Numbers (1, 2, 3...)</option>
+                  <option value="letters">Letters (A, B, C...)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="label form-label" for="shuffleCount">Number of shuffles</label>
+                <select id="shuffleCount" class="input form-select">
+                  <option value="1" selected>1 time</option>
+                  <option value="2">2 times</option>
+                  <option value="3">3 times</option>
+                  <option value="4">4 times</option>
+                  <option value="5">5 times</option>
+                  <option value="6">6 times</option>
+                  <option value="7">7 times</option>
+                  <option value="8">8 times</option>
+                  <option value="9">9 times</option>
+                  <option value="10">10 times</option>
+                </select>
+                <span class="hint form-text">More shuffles = more mixing before splitting into groups.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="d-grid gap-3">
+              <div>
+                <label class="label form-label" for="eventName"
+                  >Event name (optional)</label
+                >
+                <input
+                  id="eventName"
+                  class="input form-control"
+                  type="text"
+                  placeholder="e.g. MTB Race 2026"
+                />
+              </div>
+
+              <div>
+                <label class="label form-label" for="eventDate"
+                  >Start date (optional)</label
+                >
+                <input id="eventDate" class="input form-control" type="date" />
+              </div>
+
+              <div>
+                <label class="label form-check">
+                  <input id="scheduleEnabled" class="form-check-input" type="checkbox" />
+                  <span class="form-check-label">Start times (optional)</span>
+                </label>
+                <div class="schedule">
+                  <input id="startTime" class="input form-control" type="time" value="09:00" />
+                  <input
+                    id="intervalMinutes"
+                    class="input form-control"
+                    type="number"
+                    min="1"
+                    value="5"
+                  />
+                  <span class="hint form-text">minutes between groups</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions mt-3 d-flex flex-wrap gap-2">
+          <button id="shuffleBtn" class="button primary btn btn-primary">Shuffle</button>
+        </div>
+        <div id="shuffleStatus" class="shuffle-status text-muted small hidden">
+          Shuffling list
+        </div>
+
+        <p class="privacy text-muted small mb-0">
+          Privacy: all data is processed locally in your browser.
+        </p>
+        <div id="error" class="error text-danger small" role="alert" aria-live="polite"></div>
+      </section>
+
+      <section class="results" id="resultsSection">
+        <h2 class="h5">Shuffled groups</h2>
+        <p class="event-meta text-muted" id="eventMeta"></p>
+        <div id="resultsContainer" class="results-grid"></div>
+        <div id="exportActions" class="export-actions hidden mt-3 d-flex flex-wrap gap-2">
+          <button id="csvBtn" class="button btn btn-outline-primary">Export CSV</button>
+          <button id="pdfBtn" class="button btn btn-outline-primary">Export PDF</button>
+          <button id="pngBtn" class="button btn btn-outline-primary">Export PNG</button>
+        </div>
+        <div class="powered-footer export-only text-muted small mt-3">Powered by <a href="https://ridede.com" target="_blank" title="Ridede"><img src="ridede-logo.svg" alt="Ridede" class="ridede-logo"></a></div>
+      </section>
+
+      <div class="ridede text-end text-muted small">
+        Powered by <a href="https://ridede.com" target="_blank" title="Ridede"><img src="ridede-logo.svg" alt="Ridede" class="ridede-logo"></a>
+      </div>
+    </main>
+
+    <div
+      id="csvModal"
+      class="modal fade"
+      tabindex="-1"
+      aria-hidden="true"
+      aria-labelledby="csvModalLabel"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="h5 mb-0" id="csvModalLabel">Load participants from CSV</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label class="label form-label" for="csvInput">CSV file</label>
+            <input
+              id="csvInput"
+              class="input form-control"
+              type="file"
+              accept=".csv,text/csv"
+            />
+            <div id="csvPreview" class="csv-preview hidden"></div>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="applyCsvBtn"
+              class="button primary btn btn-primary"
+              type="button"
+              disabled
+            >
+              Apply to list
+            </button>
+            <button class="button btn btn-outline-secondary" type="button" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.LANG = {
+        participantsCount: (n) => `Total participants: ${n}`,
+        modeHintGroups: "Number of groups:",
+        modeHintSize: "People per group:",
+        shuffleRangeError: "Shuffle count must be between 1 and 10.",
+        valueError: "Value must be a number greater than 0.",
+        emptyError: "Add at least one participant.",
+        tooManyGroupsError: "Number of groups cannot exceed number of participants.",
+        groupLabel: (label) => `Group ${label}`,
+        groupLabelTime: (label, time) => `Group ${label} — ${time}`,
+        csvHeaders: ["Group", "Starting position", "Participant"],
+        exportImageError: "Failed to generate image.",
+        exportPdfError: "Failed to generate PDF.",
+        shuffleFirst: "Shuffle the list first.",
+        csvNoHeaders: "No headers found in the CSV file.",
+        csvNoData: "The CSV file contains no data.",
+        csvReadError: "Failed to read the CSV file.",
+        csvEmptyHeader: "(empty)",
+        csvPreviewInfo: "CSV preview (headers + 3 rows).",
+        csvSelectColumn: "Select the column with participant data (e.g. full name):",
+        csvRemainingRows: (n) => `${n} more rows not shown.`,
+        csvAllRows: "All rows are shown.",
+        csvColumnFallback: (n) => `Column ${n}`,
+        defaultFilename: "starting-list",
+      };
+    </script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
