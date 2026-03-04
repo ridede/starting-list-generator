@@ -1,4 +1,4 @@
-# Starting List Generator
+# Start List Generator
 
 > [Polish version](README.pl.md)
 
@@ -11,7 +11,7 @@ Everything runs in the browser — no data is sent to any server.
 ## Features
 
 - randomized group assignment using the Fisher–Yates shuffle algorithm
-- two modes: set the number of groups or the number of people per group
+- two modes: by number of groups or by number of people per group
 - CSV import with preview and column selection
 - group labels as numbers (1, 2, 3…) or letters (A, B, C…)
 - optional start time scheduling with configurable interval

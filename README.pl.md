@@ -11,7 +11,7 @@ Całość działa w przeglądarce — żadne dane nie są wysyłane na zewnętrz
 ## Funkcjonalność
 
 - losowanie podziału uczestników na grupy (Fisher–Yates shuffle)
-- dwa tryby: podaj liczbę grup lub liczbę osób w grupie
+- dwa tryby: według liczby grup lub liczby osób w grupie
 - import uczestników z pliku CSV z podglądem i wyborem kolumny
 - oznaczenie grup numerami (1, 2, 3…) lub literami (A, B, C…)
 - opcjonalne godziny startu z konfigurowalnym interwałem
@@ -47,7 +47,7 @@ Wszystkie operacje odbywają się lokalnie w przeglądarce. Żadne dane nie są 
 | `sample.csv` | Przykładowa lista uczestników |
 | `sample2.csv` | Przykładowy CSV z nagłówkami |
 
-## Kontrybucje
+## Współpraca
 
 Wkład jest mile widziany. Otwórz issue lub wyślij Pull Request.
 
